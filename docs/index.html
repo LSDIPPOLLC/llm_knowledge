@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ideallm - Personal LLM Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="#introduction" class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <div class="logo-text">
+            <span class="logo-name">ideallm</span>
+            <span class="logo-tagline">Personal LLM Wiki</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <span class="nav-label">Getting Started</span>
+          <a href="#introduction" class="nav-item active" data-section="introduction">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4M12 8h.01"/>
+            </svg>
+            Introduction
+          </a>
+          <a href="#getting-started" class="nav-item" data-section="getting-started">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Quick Start
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-label">Core Concepts</span>
+          <a href="#structure" class="nav-item" data-section="structure">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+            </svg>
+            Project Structure
+          </a>
+          <a href="#frontmatter" class="nav-item" data-section="frontmatter">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+            </svg>
+            Frontmatter Schema
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-label">Operations</span>
+          <a href="#operations" class="nav-item has-sub" data-section="operations">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Wiki Operations
+          </a>
+          <div class="nav-sub-items">
+            <a href="#operations-ingest" class="nav-item sub" data-section="operations-ingest">Ingest</a>
+            <a href="#operations-query" class="nav-item sub" data-section="operations-query">Query</a>
+            <a href="#operations-sync" class="nav-item sub" data-section="operations-sync">Sync</a>
+            <a href="#operations-deprecate" class="nav-item sub" data-section="operations-deprecate">Deprecate</a>
+            <a href="#operations-lint" class="nav-item sub" data-section="operations-lint">Lint</a>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-label">Resources</span>
+          <a href="#tools" class="nav-item" data-section="tools">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+            </svg>
+            Tool Stack
+          </a>
+          <a href="#search" class="nav-item" data-section="search">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            Search
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" target="_blank" class="external-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+          </svg>
+          Karpathy's LLM Wiki
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section id="introduction" class="content-section active">
+        <div class="section-header">
+          <h1>Introduction</h1>
+          <p class="section-lead">A personal knowledge base and agent memory system powered by an LLM wiki.</p>
+        </div>
+
+        <div class="content-block">
+          <p>ideallm uses Andrej Karpathy's <strong>LLM Wiki pattern</strong> - a personal knowledge base where an AI compiles sources into a structured, interlinked wiki. The wiki sits between you and your raw sources, accumulating knowledge over time rather than rediscovering it on every query.</p>
+        </div>
+
+        <div class="highlight-box">
+          <div class="highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="highlight-content">
+            <h3>Two Purposes</h3>
+            <ul>
+              <li><strong>Personal Knowledge Base</strong> - Tracking research, articles, papers, books, ideas</li>
+              <li><strong>Agent Memory</strong> - Persistent memory across sessions; accumulates knowledge about projects, decisions, patterns</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="content-block">
+          <h2>Core Principle</h2>
+          <p>The <code>raw/</code> directory is the source of truth. Wiki pages track their relationship to raw sources via versioned frontmatter. When raw changes, the wiki must be re-synced.</p>
+        </div>
+      </section>
+
+      <section id="getting-started" class="content-section">
+        <div class="section-header">
+          <h1>Quick Start</h1>
+          <p class="section-lead">Get up and running with your personal wiki in minutes.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Open in Obsidian</h3>
+              <pre><code>obsidian /path/to/ideallm/wiki</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Add sources to <code>raw/</code></h3>
+              <p>Add articles, papers, or notes to the raw directory.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Ingest content</h3>
+              <pre><code>> ingest raw/articles/filename.md</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Query the wiki</h3>
+              <pre><code>> What does our wiki say about scaling laws?</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h3>Run lint to check health</h3>
+              <pre><code>> lint</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+              <h3>Sync when sources change</h3>
+              <pre><code>> sync raw/articles/my-article.md</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="structure" class="content-section">
+        <div class="section-header">
+          <h1>Project Structure</h1>
+          <p class="section-lead">The wiki follows a simple but powerful directory convention.</p>
+        </div>
+
+        <pre class="code-block"><code>ideallm/
+├── CLAUDE.md              # Behavioral guidelines for the AI agent
+├── WIKI_SCHEMA.md         # LLM Wiki schema (operations, conventions)
+├── raw/                   # Source of truth (wiki must stay in sync with raw)
+│   ├── articles/          # Web-clipped or manually added articles
+│   ├── papers/            # Academic papers, technical reports
+│   ├── notes/             # Personal notes, journal entries, reflections
+│   └── assets/            # Downloaded images, figures, attachments
+├── wiki/                  # LLM-generated wiki (YOU own this; LLM maintains it)
+│   ├── index.md           # Master catalog of all wiki pages
+│   ├── log.md             # Append-only activity timeline
+│   ├── overview.md        # High-level synthesis of the knowledge base
+│   ├── concepts/          # Concept pages
+│   ├── entities/          # Entity pages (people, organizations)
+│   ├── sources/           # Source summary pages
+│   ├── comparisons/       # Comparison pages
+│   └── reflections/       # Insights filed from queries
+└── .claude/
+    ├── memory/            # Lightweight session memory files
+    ├── domains.md         # Topic-to-page index for quick discovery
+    └── wiki_query.py      # Terminal search tool</code></pre>
+
+        <div class="content-block">
+          <h2>Directory Purposes</h2>
+          <div class="dir-grid">
+            <div class="dir-item">
+              <code>raw/</code>
+              <p>Immutable source documents. NEVER modify directly.</p>
+            </div>
+            <div class="dir-item">
+              <code>wiki/</code>
+              <p>LLM-generated wiki. YOU own this; LLM maintains it.</p>
+            </div>
+            <div class="dir-item">
+              <code>.claude/</code>
+              <p>Session memory and search tools.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="frontmatter" class="content-section">
+        <div class="section-header">
+          <h1>Frontmatter Schema</h1>
+          <p class="section-lead">Every wiki page has YAML frontmatter for tracking metadata.</p>
+        </div>
+
+        <div class="content-block">
+          <h2>Wiki Page Frontmatter</h2>
+          <pre class="code-block"><code>---
+title: Page Title
+type: concept | entity | source-summary | comparison | reflection
+sources: [list of raw/ files referenced]
+related: [list of wiki pages linked]
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+confidence: high | medium | low
+status: current | stale | deprecated
+raw_version: "1.0.0"
+last_verified: YYYY-MM-DD
+replaced_by: wiki/path/to/replacement.md  # for deprecated pages only
+---</code></pre>
+        </div>
+
+        <div class="content-block">
+          <h2>Status Values</h2>
+          <div class="status-list">
+            <div class="status-item current">
+              <span class="status-badge">current</span>
+              <span>Wiki content is in sync with raw sources</span>
+            </div>
+            <div class="status-item stale">
+              <span class="status-badge">stale</span>
+              <span>Raw has changed since this page was last verified/ingested</span>
+            </div>
+            <div class="status-item deprecated">
+              <span class="status-badge">deprecated</span>
+              <span>This page is superseded; see <code>replaced_by</code> for current content</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-block">
+          <h2>Raw File Frontmatter</h2>
+          <pre class="code-block"><code>---
+title: Users API Reference
+version: "2.1.0"
+last_updated: 2026-04-15
+---</code></pre>
+          <p>The <code>version</code> field tracks when the raw content changes, enabling the sync workflow.</p>
+        </div>
+      </section>
+
+      <section id="operations" class="content-section">
+        <div class="section-header">
+          <h1>Wiki Operations</h1>
+          <p class="section-lead">Core workflows for maintaining your wiki.</p>
+        </div>
+
+        <div class="operations-grid">
+          <div id="operations-ingest" class="operation-card">
+            <div class="operation-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </div>
+            <h3>Ingest</h3>
+            <pre><code>> ingest raw/articles/my-article.md</code></pre>
+            <p>Drop a file into <code>raw/</code> and tell the AI to process it.</p>
+            <p>The AI will:</p>
+            <ol>
+              <li>Read the source</li>
+              <li>Discuss key takeaways with you</li>
+              <li>Create/update a summary page in <code>wiki/sources/</code></li>
+              <li>Update <code>wiki/index.md</code> with new page</li>
+              <li>Update all relevant concept and entity pages</li>
+              <li>Add links from existing pages that reference the new content</li>
+              <li>Append an entry to <code>wiki/log.md</code></li>
+            </ol>
+          </div>
+
+          <div id="operations-query" class="operation-card">
+            <div class="operation-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </div>
+            <h3>Query</h3>
+            <pre><code>> What does our wiki say about scaling laws?</code></pre>
+            <p>Ask questions and the AI synthesizes answers from the wiki.</p>
+            <p>The AI reads <code>wiki/index.md</code>, identifies relevant pages, synthesizes an answer with <code>[[wiki-link]]</code> citations.</p>
+            <p>Good answers can be filed back into the wiki as new pages.</p>
+          </div>
+
+          <div id="operations-sync" class="operation-card">
+            <div class="operation-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M23 4v6h-6M1 20v-6h6"/>
+                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+              </svg>
+            </div>
+            <h3>Sync</h3>
+            <pre><code>> sync raw/articles/my-article.md</code></pre>
+            <p>When raw sources change, sync the wiki to keep it current.</p>
+            <p>This:</p>
+            <ol>
+              <li>Detects version changes</li>
+              <li>Marks affected pages as <code>stale</code></li>
+              <li>Re-ingests the changed source</li>
+              <li>Deprecates old pages</li>
+              <li>Updates frontmatter</li>
+            </ol>
+          </div>
+
+          <div id="operations-deprecate" class="operation-card">
+            <div class="operation-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+              </svg>
+            </div>
+            <h3>Deprecate</h3>
+            <pre><code>> deprecate wiki/concepts/old-auth.md</code></pre>
+            <p>Mark a page as superseded.</p>
+            <p>This adds <code>status: deprecated</code>, <code>replaced_by</code> frontmatter, a deprecation banner, and updates <code>wiki/index.md</code>.</p>
+          </div>
+
+          <div id="operations-lint" class="operation-card">
+            <div class="operation-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+              </svg>
+            </div>
+            <h3>Lint</h3>
+            <pre><code>> lint</code></pre>
+            <p>Health-check for issues:</p>
+            <ul>
+              <li>Contradictions between pages</li>
+              <li>Orphan pages with no inbound links</li>
+              <li>Missing pages for concepts mentioned but lacking their own page</li>
+              <li><strong>Stale pages</strong> - pages with <code>status: stale</code> that need re-ingesting</li>
+              <li><strong>Deprecated pages</strong> - superseded pages still linked</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" class="content-section">
+        <div class="section-header">
+          <h1>Tool Stack</h1>
+          <p class="section-lead">Optional tools that enhance the wiki workflow.</p>
+        </div>
+
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              <h3>Obsidian</h3>
+              <span class="tool-badge">Recommended</span>
+            </div>
+            <p>Open the <code>wiki/</code> directory in Obsidian as a vault.</p>
+            <ul>
+              <li><strong>Graph view</strong> - visualize page connections</li>
+              <li><strong>Web Clipper</strong> - clip articles directly to <code>raw/</code></li>
+              <li><strong>Dataview</strong> - query frontmatter as a database</li>
+            </ul>
+            <pre><code>obsidian /path/to/ideallm/wiki</code></pre>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <h3>qmd</h3>
+            </div>
+            <p>Local search for large wikis (BM25 + vector + LLM re-ranking)</p>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              <h3>Marp</h3>
+            </div>
+            <p>Generate slide decks from wiki content</p>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M16 8v5a3 3 0 006 0M12 2v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+              </svg>
+              <h3>Git</h3>
+            </div>
+            <p>Version control for the wiki (use branches to explore reorganizations)</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="search" class="content-section">
+        <div class="section-header">
+          <h1>Search</h1>
+          <p class="section-lead">Query your wiki from the terminal.</p>
+        </div>
+
+        <div class="content-block">
+          <h2>Wiki Query Tool</h2>
+          <pre class="code-block"><code># Search all wiki content
+python .claude/wiki_query.py "vibe coding"
+
+# Search specific areas
+python .claude/wiki_query.py "agentic engineering" --pages
+python .claude/wiki_query.py "scaling laws" --sources
+python .claude/wiki_query.py "karpathy" --recent
+
+# Output as JSON
+python .claude/wiki_query.py "moe" --json</code></pre>
+        </div>
+
+        <div class="content-block">
+          <h2>Options</h2>
+          <table class="options-table">
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>&lt;term&gt;</code></td>
+                <td>Search term (required, or pass via stdin)</td>
+              </tr>
+              <tr>
+                <td><code>--domains</code></td>
+                <td>Search domain index only</td>
+              </tr>
+              <tr>
+                <td><code>--pages</code></td>
+                <td>Search wiki pages only</td>
+              </tr>
+              <tr>
+                <td><code>--sources</code></td>
+                <td>Search raw sources only</td>
+              </tr>
+              <tr>
+                <td><code>--recent</code></td>
+                <td>Search recent activity in log</td>
+              </tr>
+              <tr>
+                <td><code>--json</code></td>
+                <td>Output as JSON</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

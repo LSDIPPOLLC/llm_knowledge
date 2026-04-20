@@ -19,7 +19,9 @@ const LazyFallback = () => (
   </div>
 );
 import { SaveFlourish } from "./components/SaveFlourish";
+import { VaultMenu } from "./components/VaultMenu";
 import { useVault } from "./state/vault";
+import { useRecent } from "./state/recent";
 import { useTabs } from "./state/tabs";
 import { useOps } from "./state/ops";
 import { useTheme, initThemeListener } from "./state/theme";
@@ -97,6 +99,10 @@ export default function App() {
       try {
         const current = await api.getVaultRoot();
         if (current) { await loadRoot(current); return; }
+        const recent = useRecent.getState().list;
+        if (recent.length) {
+          try { await loadRoot(recent[0].path); } catch { /* stale path */ }
+        }
       } catch {}
     })();
   }, []);
@@ -122,7 +128,6 @@ export default function App() {
     }
   };
 
-  const rootShort = root ? root.replace(/^.*\/([^/]+\/[^/]+)$/, "$1") : "";
   const pageCount = tree.reduce((n, t) => n + countFiles(t), 0);
   const vol = roman(Math.max(1, pageCount));
 
@@ -148,9 +153,7 @@ export default function App() {
           <span className="sep" aria-hidden="true">·</span>
           <span className="m-date">{ISSUE_DATE}</span>
           <span className="sep m-vault-sep" aria-hidden="true">·</span>
-          <button type="button" className="vault-label" onClick={pickVault} aria-label="pick vault directory">
-            <FolderOpen size={12} aria-hidden="true" /> {rootShort || "pick vault"}
-          </button>
+          <VaultMenu />
         </div>
         <div className="top-actions">
           <button

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { api, TreeNode, Graph } from "../lib/api";
+import { useRecent } from "./recent";
 
 interface VaultState {
   root: string | null;
@@ -20,6 +21,7 @@ export const useVault = create<VaultState>((set, get) => ({
   loadRoot: async (path) => {
     await api.setVaultRoot(path);
     set({ root: path });
+    useRecent.getState().add(path);
     await get().refresh();
   },
   refresh: async () => {

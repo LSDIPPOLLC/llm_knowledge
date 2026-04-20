@@ -67,19 +67,21 @@ export function Editor({ path }: { path: string }) {
 
   return (
     <div className="editor-pane">
-      <CodeMirror
-        value={tab.content}
-        extensions={extensions}
-        onChange={(v) => setContent(path, v)}
-        basicSetup={{
-          lineNumbers: false,
-          foldGutter: false,
-          highlightActiveLine: false,
-          highlightActiveLineGutter: false,
-          bracketMatching: false,
-        }}
-        height="100%"
-      />
+      <div className="cm-host">
+        <CodeMirror
+          value={tab.content}
+          extensions={extensions}
+          onChange={(v) => setContent(path, v)}
+          basicSetup={{
+            lineNumbers: false,
+            foldGutter: false,
+            highlightActiveLine: false,
+            highlightActiveLineGutter: false,
+            bracketMatching: false,
+          }}
+          height="100%"
+        />
+      </div>
     </div>
   );
 }

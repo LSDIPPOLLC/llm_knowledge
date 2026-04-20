@@ -2,23 +2,42 @@ import { useMemo, useRef, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 import { useVault } from "../state/vault";
 import { useTabs } from "../state/tabs";
+import { useTheme } from "../state/theme";
 import { jitterAngle } from "../lib/delight";
 
-const COLORS: Record<string, string> = {
-  concept: "#b23a2a",         // oxblood
-  entity: "#a6833b",          // brass
-  "source-summary": "#8a6f4a", // umber
-  comparison: "#6b7d5e",       // sage
-  reflection: "#3a3229",       // ink-soft
-  raw: "#c9bda1",              // rule
-  page: "#7a6e5d",             // ink-dim
-};
+function tokenColor(name: string): string {
+  if (typeof window === "undefined") return "";
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+const COLOR_VARS: { key: string; label: string; cssVar: string }[] = [
+  { key: "concept",         label: "concept",    cssVar: "--graph-color-concept" },
+  { key: "entity",          label: "entity",     cssVar: "--graph-color-entity" },
+  { key: "source-summary",  label: "source",     cssVar: "--graph-color-source" },
+  { key: "comparison",      label: "comparison", cssVar: "--graph-color-comparison" },
+  { key: "reflection",      label: "reflection", cssVar: "--graph-color-reflection" },
+  { key: "raw",             label: "raw",        cssVar: "--graph-color-raw" },
+  { key: "page",            label: "page",       cssVar: "--graph-color-page" },
+];
 
 export function GraphView() {
   const graph = useVault((s) => s.graph);
   const openPath = useTabs((s) => s.openPath);
+  const resolved = useTheme((s) => s.resolved);
   const ref = useRef<any>(null);
   const [filter, setFilter] = useState<string>("");
+
+  // Resolve palette from CSS custom props; re-run when theme flips.
+  const palette = useMemo(() => {
+    const out: Record<string, string> = {};
+    for (const v of COLOR_VARS) {
+      out[v.key] = tokenColor(v.cssVar) || "#7a6e5d";
+    }
+    return out;
+  }, [resolved]);
+
+  const labelColor = useMemo(() => tokenColor("--graph-label"), [resolved]);
+  const linkColor = useMemo(() => tokenColor("--graph-link"), [resolved]);
 
   const data = useMemo(() => {
     if (!graph) return { nodes: [], links: [] };
@@ -30,26 +49,24 @@ export function GraphView() {
         title: n.title,
         node_type: n.node_type,
         status: n.status,
-        color: COLORS[n.node_type] || "#7a6e5d",
+        color: palette[n.node_type] || palette.page,
       }));
     const ids = new Set(nodes.map((n) => n.id));
-    // force-graph mutates link source/target from string ids into node refs
-    // after first render. Re-normalise to string ids every time we filter so
-    // the subset calculation stays correct across filter switches.
     const srcId = (v: any) => (typeof v === "object" && v !== null ? v.id : v);
     const links = graph.links
       .map((l) => ({ source: srcId(l.source), target: srcId(l.target) }))
       .filter((l) => ids.has(l.source) && ids.has(l.target));
     return { nodes, links };
-  }, [graph, filter]);
+  }, [graph, filter, palette]);
 
   return (
     <div className="graph-view">
       <div className="graph-toolbar">
         <button onClick={() => setFilter("")} className={!filter ? "on" : ""}>all</button>
-        {Object.keys(COLORS).map((k) => (
-          <button key={k} onClick={() => setFilter(k)} className={filter === k ? "on" : ""}>
-            <span className="dot" style={{ background: COLORS[k] }} />{k.replace("-", " ")}
+        {COLOR_VARS.map((v) => (
+          <button key={v.key} onClick={() => setFilter(v.key)} className={filter === v.key ? "on" : ""}>
+            <span className="dot" style={{ background: palette[v.key] }} />
+            {v.label}
           </button>
         ))}
         <span className="graph-stats">{data.nodes.length} nodes · {data.links.length} links</span>
@@ -61,7 +78,7 @@ export function GraphView() {
           backgroundColor="transparent"
           nodeLabel={(n: any) => `${n.title} · ${n.node_type}`}
           nodeRelSize={3.5}
-          linkColor={() => "rgba(122,110,93,0.35)"}
+          linkColor={() => linkColor}
           linkWidth={0.8}
           onNodeClick={(n: any) => openPath(n.path)}
           nodeCanvasObjectMode={() => "after"}
@@ -71,7 +88,7 @@ export function GraphView() {
             ctx.translate(node.x, node.y + 10);
             ctx.rotate((jitterAngle(node.id) * Math.PI) / 180);
             ctx.font = `italic ${fs}px "Fraunces", serif`;
-            ctx.fillStyle = "rgba(26,23,20,0.82)";
+            ctx.fillStyle = labelColor;
             ctx.textAlign = "center";
             ctx.fillText(node.title, 0, 0);
             ctx.restore();

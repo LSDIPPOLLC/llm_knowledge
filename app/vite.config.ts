@@ -28,6 +28,8 @@ export default defineConfig({
           if (id.includes("cmdk")) return "cmdk";
           if (id.includes("js-yaml")) return "yaml";
           if (id.includes("lucide-react")) return "icons";
+          if (id.includes("mermaid") || id.includes("dagre") || id.includes("cytoscape") ||
+              id.includes("katex") || id.includes("d3-") || id.includes("roughjs")) return "mermaid";
           // react + everything else → default vendor chunk
         },
       },
